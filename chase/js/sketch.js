@@ -25,9 +25,13 @@ function setup() {
   
   noLoop();
   
-  player.locCol = int(random(cellCols)) * cellWidth;
-  player.locRow = int(random(cellRows)) * cellHeight;
-  drawPlayer();
+  // player.locCol = int(random(cellCols))* cellWidth;
+  // player.locRow = int(random(cellRows)) * cellHeight;
+  player.locCol = int(random(cellCols));
+  player.locRow = int(random(cellRows));
+  console.log(player.locCol, player.locRow);
+  grid[player.locCol][player.locRow] = player;
+  player.drawPlayer();
 }
 
 function draw() {
@@ -51,7 +55,7 @@ function draw() {
     cellHeight
   );
   
-  drawPlayer();
+  player.drawPlayer();
 }
 
 function keyReleased() {
@@ -68,33 +72,33 @@ function keyReleased() {
     redraw();
 }
 
-function drawPlayer() {
+player.drawPlayer = function() {
   push();
   fill(0, 255, 0);
-  rect(player.locCol, player.locRow, cellWidth, cellHeight);
+  rect(player.locCol * cellWidth, player.locRow * cellHeight, cellWidth, cellHeight);
   pop();
 }
 
 player.moveUp = function () {
   if(player.locRow > 0) {
-      player.locRow-=cellHeight;
+      player.locRow--;
   }
 }
 
 player.moveRight = function () {
-  if(player.locCol < (cellCols-1)*cellWidth) {
-    player.locCol+=cellWidth;
+  if(player.locCol < (cellCols-1)) {
+    player.locCol++;
   }
 }
 
 player.moveDown = function() {
-  if(player.locRow < (cellRows-1)*cellHeight) {
-    player.locRow+=cellHeight;
+  if(player.locRow < (cellRows-1)) {
+    player.locRow++;
   }
 }
 
 player.moveLeft = function() {
   if(player.locCol > 0) {
-    player.locCol-=cellWidth;
+    player.locCol--;
   }
 }
