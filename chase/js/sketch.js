@@ -6,8 +6,7 @@ const cellRows = 20;
 const cellCols = 20;
 let grid = new Array(cellCols);
 let player = {
-  locCol: 0,
-  locRow: 0
+  type: "player"
 };
 
 function setup() {
@@ -19,19 +18,22 @@ function setup() {
   
   for(let i = 0; i < cellCols; i++) {
     for(let j = 0; j < cellRows; j++) {
-      grid[i][j] = null;
+      grid[i][j] = { 
+        type: "empty",
+        "i": i,
+        "j": j
+      };
     }
   }
   
   noLoop();
+
+  let playerCol = int(random(cellCols))
+  let playerRow = int(random(cellRows))
   
-  // player.locCol = int(random(cellCols))* cellWidth;
-  // player.locRow = int(random(cellRows)) * cellHeight;
-  player.locCol = int(random(cellCols));
-  player.locRow = int(random(cellRows));
-  console.log(player.locCol, player.locRow);
-  grid[player.locCol][player.locRow] = player;
-  player.drawPlayer();
+  grid[playerCol][[playerRow]] = player;
+  player.i = playerCol;
+  player.j = playerRow;
 }
 
 function draw() {
@@ -44,6 +46,10 @@ function draw() {
     for (let j = 0; j < cellRows; j++) {
       line(i * cellWidth, 0, i * cellWidth, height);
       line(0, j * cellHeight, width, j * cellHeight);
+
+      if(grid[i][j].type === "player") {
+        grid[i][j].drawPlayer();
+      }
     }
   }
 
@@ -75,30 +81,31 @@ function keyReleased() {
 player.drawPlayer = function() {
   push();
   fill(0, 255, 0);
-  rect(player.locCol * cellWidth, player.locRow * cellHeight, cellWidth, cellHeight);
+  console.log(this);
+  rect(this.i * cellWidth, this.j * cellHeight, cellWidth, cellHeight);
   pop();
 }
 
 player.moveUp = function () {
-  if(player.locRow > 0) {
-      player.locRow--;
+  if(player.j > 0) {
+      player.j--;
   }
 }
 
 player.moveRight = function () {
-  if(player.locCol < (cellCols-1)) {
-    player.locCol++;
+  if(player.i < (cellCols-1)) {
+    player.i++;
   }
 }
 
 player.moveDown = function() {
-  if(player.locRow < (cellRows-1)) {
-    player.locRow++;
+  if(player.j < (cellRows-1)) {
+    player.j++;
   }
 }
 
 player.moveLeft = function() {
-  if(player.locCol > 0) {
-    player.locCol--;
+  if(player.i > 0) {
+    player.i--;
   }
 }
